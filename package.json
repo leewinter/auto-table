@@ -1,11 +1,11 @@
 {
   "name": "auto-table",
   "author": {
-    "name" : "Lee Winter",
-    "email" : "lee.winter@boxspark.co.uk"
+    "name": "Lee Winter",
+    "email": "lee.winter@boxspark.co.uk"
   },
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,7 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "publish:npm": "rm -rf dist && mkdir dist &&  babel ./src/components -d dist --copy-files" 
+    "publish:npm": "rm -rf dist && mkdir dist &&  babel ./src/components -d dist --copy-files"
   },
   "files": [
     "dist"
