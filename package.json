@@ -13,14 +13,29 @@
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "publish:npm": "rm -rf dist && mkdir dist &&  babel ./src/components -d dist --copy-files" 
   },
-  "dependencies": {
-    "@r2wc/react-to-web-component": "^2.0.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/auto-table.es.js",
+      "require": "./dist/auto-table.umd.js"
+    },
+    "./dist/style.css": "./dist/style.css"
+  },
+  "main": "./dist/auto-table.umd.js",
+  "module": "./dist/auto-table.es.js",
+  "peerDependencies": {
+    "react": "16.8.0 || >=17.x",
+    "react-dom": "16.8.0 || >=17.x"
   },
   "devDependencies": {
+    "@r2wc/react-to-web-component": "^2.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "@storybook/addon-essentials": "^7.0.26",
     "@storybook/addon-interactions": "^7.0.26",
     "@storybook/addon-links": "^7.0.26",
@@ -40,6 +55,10 @@
     "prop-types": "^15.8.1",
     "storybook": "^7.0.26",
     "vite": "^4.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leewinter/auto-table"
   },
   "license": "MIT"
 }
