@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/build.js",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
@@ -23,6 +23,10 @@
     ".": {
       "import": "./dist/auto-table.es.js",
       "require": "./dist/auto-table.umd.js"
+    },
+    "./webcomponents": {
+      "import": "./dist/auto-table-web-component.es.js",
+      "require": "./dist/auto-table-web-component.umd.js"
     },
     "./dist/style.css": "./dist/style.css"
   },
