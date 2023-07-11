@@ -1,3 +1,4 @@
+import React from "react";
 import r2wc from "@r2wc/react-to-web-component";
 import PropTypes from "prop-types";
 import { useMemo, useState, useEffect } from "react";
