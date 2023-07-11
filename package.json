@@ -5,7 +5,7 @@
     "email": "lee.winter@boxspark.co.uk"
   },
   "private": false,
-  "version": "0.0.8-alpha.1",
+  "version": "0.0.8-alpha.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -33,8 +33,6 @@
   "main": "./dist/auto-table.umd.js",
   "module": "./dist/auto-table.es.js",
   "peerDependencies": {
-    "react": "16.8.0 || >=17.x",
-    "react-dom": "16.8.0 || >=17.x"
   },
   "devDependencies": {
     "@r2wc/react-to-web-component": "^2.0.2",
