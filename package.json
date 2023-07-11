@@ -21,14 +21,14 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/auto-table.es.js",
-      "require": "./dist/auto-table.umd.js"
+      "import": "./dist/lib/auto-table.es.js",
+      "require": "./dist/lib/auto-table.umd.js"
     },
-    "./webcomponents": {
-      "import": "./dist/auto-table-web-component.es.js",
-      "require": "./dist/auto-table-web-component.umd.js"
+    "./webcomponent": {
+      "import": "./dist/lib/auto-table-web-component.js",
+      "require": "./dist/lib/auto-table-web-component.js"
     },
-    "./dist/style.css": "./dist/style.css"
+    "./dist/lib/style.css": "./dist/lib/auto-table-web-component.css"
   },
   "main": "./dist/auto-table.umd.js",
   "module": "./dist/auto-table.es.js",

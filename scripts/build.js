@@ -4,27 +4,31 @@ import react from "@vitejs/plugin-react-swc";
 import { readFileSync } from "fs";
 const packageJson = JSON.parse(readFileSync("./package.json"));
 
-const reactComponentLibrary = {
-  plugins: [],
-  entry: "./src/components/index.js",
-  fileName: (format) => `auto-table.${format}.js`,
-  name: "index",
+const getWebComponentConfiguration = () => {
+  return defineConfig({
+    plugins: [react()],
+    build: {
+      rollupOptions: {
+        output: {
+          // lib/auto-table-web-component-[name].[ext]
+          entryFileNames: `lib/auto-table-web-component.js`,
+          chunkFileNames: `lib/auto-table-web-component.js`,
+          assetFileNames: `lib/auto-table-web-component.[ext]`,
+        },
+      },
+    },
+  });
 };
 
-const webcomponentsLibrary = {
-  plugins: [],
-  entry: "./src/components/index-wc.js",
-  fileName: (format) => `auto-table-web-component.${format}.js`,
-  name: "webcomponents",
-};
-
-const getSharedConfiguration = ({ plugins, ...library }) => {
-  return defineConfig(() => ({
-    plugins: [react(), ...plugins],
+const getReactConfiguration = () => {
+  return defineConfig({
+    plugins: [react()],
     build: {
       lib: {
         formats: ["es", "umd"],
-        ...library,
+        entry: "./src/components/index.js",
+        fileName: (format) => `lib/auto-table.${format}.js`,
+        name: "library",
       },
     },
     rollupOptions: {
@@ -35,7 +39,7 @@ const getSharedConfiguration = ({ plugins, ...library }) => {
         },
       },
     },
-  }));
+  });
 };
 
 const viteBuild = (configFactory) => {
@@ -46,9 +50,7 @@ const viteBuild = (configFactory) => {
 
 const buildLibraries = async () => {
   await Promise.all(
-    [webcomponentsLibrary, reactComponentLibrary]
-      .map(getSharedConfiguration)
-      .map(viteBuild),
+    [getWebComponentConfiguration, getReactConfiguration].map(viteBuild),
   );
 };
 
