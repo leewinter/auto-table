@@ -5,7 +5,7 @@
     "email": "lee.winter@boxspark.co.uk"
   },
   "private": false,
-  "version": "0.0.8-alpha.4",
+  "version": "0.0.8-alpha.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -30,8 +30,8 @@
     },
     "./dist/lib/style.css": "./dist/lib/auto-table-web-component.css"
   },
-  "main": "./dist/auto-table.umd.js",
-  "module": "./dist/auto-table.es.js",
+  "main": "./dist/lib/auto-table.umd.js",
+  "module": "./dist/lib/auto-table.es.js",
   "peerDependencies": {
   },
   "devDependencies": {
