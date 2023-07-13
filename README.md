@@ -5,7 +5,7 @@ Simple react component to auto generate tables from arrays or objects
 ```javascript
 import { AutoTable } from "@leewinter/auto-table";
 // Not required if built in styles aren't used
-import "@leewinter/auto-table/dist/style.css";
+import "@leewinter/auto-table/dist/styles.css";
 
 const testData = [
       { id: 1, name: "Lee", mobile: "na" },

@@ -1,7 +1,6 @@
-import r2wc from "@r2wc/react-to-web-component";
 import PropTypes from "prop-types";
 import { useMemo, useState, useEffect } from "react";
-import "../index.css";
+import "./index.css";
 
 const getDataType = (val) => {
   if (val) {
@@ -89,15 +88,4 @@ AutoTable.propTypes = {
 AutoTable.defaultProps = {
   data: null,
   backgroundColor: null,
-};
-
-// Used for web component version
-export const autoTableComponentInit = () => {
-  const t = r2wc(AutoTable, {
-    props: {
-      data: "json",
-    },
-  });
-
-  customElements.define("auto-table", t);
 };

@@ -1,3 +1,1 @@
-import AutoTable from './AutoTable';
-
-export { AutoTable };
+export { default as AutoTable } from "./AutoTable";
