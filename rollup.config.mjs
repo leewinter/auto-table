@@ -14,6 +14,7 @@ import terser from "@rollup/plugin-terser";
 import analyze from "rollup-plugin-analyzer";
 import preserveDirectives from "rollup-plugin-preserve-directives";
 import css from "rollup-plugin-import-css";
+import external from "rollup-plugin-peer-deps-external";
 
 const require = createRequire(import.meta.url);
 const pkg = require("./package.json");
@@ -70,6 +71,7 @@ const config = {
     ...Object.keys(pkg.peerDependencies || {}),
   ]),
   plugins: [
+    external(),
     css({ output: "assets/bundle-styles.css" }),
     alias({
       entries: {

@@ -2,23 +2,19 @@ import PropTypes from "prop-types";
 import { useMemo, useState, useEffect } from "react";
 import "./index.css";
 
-const getDataType = (val) => {
-  if (val) {
-    // ignore functions for now
-    if (typeof val === "function") return null;
-    if (Array.isArray(val)) return "array";
-    if (typeof val === "object") return "object";
-  }
-  return null;
-};
-
-export default function AutoTable({
-  data,
-  tableClass = "styled-table",
-  ...props
-}) {
+export default function AutoTable({ data, tableClass, ...props }) {
   const [tableRows, setTableRows] = useState([]);
-  const [selectedRow, setSelectedRow] = useState();
+  const [selectedRow, setSelectedRow] = useState("");
+
+  const getDataType = (val) => {
+    if (val) {
+      // ignore functions for now
+      if (typeof val === "function") return null;
+      if (Array.isArray(val)) return "array";
+      if (typeof val === "object") return "object";
+    }
+    return null;
+  };
 
   const dataType = useMemo(() => {
     return getDataType(data);
@@ -87,5 +83,5 @@ AutoTable.propTypes = {
 
 AutoTable.defaultProps = {
   data: null,
-  backgroundColor: null,
+  tableClass: "styled-table",
 };
