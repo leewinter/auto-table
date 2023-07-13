@@ -19,19 +19,6 @@ import external from "rollup-plugin-peer-deps-external";
 const require = createRequire(import.meta.url);
 const pkg = require("./package.json");
 
-/**
- * Used for generating external dependencies
- * Credit: Mateusz Burzyński (https://github.com/Andarist)
- * Source: https://github.com/rollup/rollup-plugin-babel/issues/148#issuecomment-399696316
- */
-const makeExternalPredicate = (externalArr) => {
-  if (externalArr.length === 0) {
-    return () => false;
-  }
-  const pattern = new RegExp(`^(${externalArr.join("|")})($|/)`);
-  return (id) => pattern.test(id);
-};
-
 const babelRuntimeVersion = pkg.dependencies["@babel/runtime"].replace(
   /^[^0-9]*/,
   "",
@@ -65,11 +52,6 @@ const config = {
       ...outputOptions,
     },
   ],
-  external: makeExternalPredicate([
-    // Handles both dependencies and peer dependencies so we don't have to manually maintain a list
-    ...Object.keys(pkg.dependencies || {}),
-    ...Object.keys(pkg.peerDependencies || {}),
-  ]),
   plugins: [
     external(),
     css({ output: "assets/bundle-styles.css" }),
