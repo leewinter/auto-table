@@ -2,19 +2,33 @@ import PropTypes from "prop-types";
 import { useMemo, useState, useEffect } from "react";
 import "./index.css";
 
-export default function AutoTable({ data, tableClass, ...props }) {
+const getDataType = (val) => {
+  if (val) {
+    if (Array.isArray(val)) return "array";
+    return typeof val;
+  }
+  return null;
+};
+
+const nonRenderTypes = ["functions", "object", "array"];
+
+const RenderValue = ({ val, tableClass, tableIndex }) => {
+  if (nonRenderTypes.some((n) => n === getDataType(val)))
+    return (
+      <AutoTable
+        data={val}
+        tableClass={tableClass}
+        tableIndex={tableIndex + 1}
+      />
+    );
+  return <span>{val}</span>;
+};
+
+export default function AutoTable({ data, tableClass, tableIndex, ...props }) {
   const [tableRows, setTableRows] = useState([]);
   const [selectedRow, setSelectedRow] = useState("");
-
-  const getDataType = (val) => {
-    if (val) {
-      // ignore functions for now
-      if (typeof val === "function") return null;
-      if (Array.isArray(val)) return "array";
-      if (typeof val === "object") return "object";
-    }
-    return null;
-  };
+  const [isPrimitiveArray, setIsPrimitiveArray] = useState(false);
+  const [isObjectTable, setIsObjectTable] = useState(false);
 
   const dataType = useMemo(() => {
     return getDataType(data);
@@ -22,8 +36,24 @@ export default function AutoTable({ data, tableClass, ...props }) {
 
   const columns = useMemo(() => {
     if (dataType) {
-      return Object.keys(dataType === "array" ? data[0] : data);
+      let firsOrOnlyRow = {};
+      if (dataType === "array") {
+        const firstRow = data[0] ?? firsOrOnlyRow;
+        if (getDataType(firstRow) === "object") {
+          // is object array
+          firsOrOnlyRow = firstRow;
+        } else {
+          // is primitive array
+          setIsPrimitiveArray(true);
+        }
+      } else {
+        // is object
+        firsOrOnlyRow = data;
+        setIsObjectTable(true);
+      }
+      return Object.keys(firsOrOnlyRow);
     }
+    return [];
   }, [data, dataType]);
 
   useEffect(() => {
@@ -34,37 +64,71 @@ export default function AutoTable({ data, tableClass, ...props }) {
   }, [data, dataType]);
 
   const handleRowClicked = (rowIndex) => {
-    setSelectedRow(rowIndex);
+    if (!isPrimitiveArray && !isObjectTable) setSelectedRow(rowIndex);
   };
 
-  if (!data)
+  if (!tableRows.length)
     return (
       <div>
         <p>No data found</p>
       </div>
     );
 
-  return (
-    <table {...props} className={tableClass}>
-      <thead>
-        <tr>
-          {columns.map((col, colIndex) => (
-            <th key={colIndex}>{col}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
+  const RenderAsArray = () => {
+    return (
+      <>
         {tableRows.map((row, rowIndex) => (
           <tr
-            key={rowIndex}
-            onClick={() => handleRowClicked(rowIndex)}
-            className={rowIndex === selectedRow ? "active-row" : null}
+            key={`${tableIndex}_${rowIndex}`}
+            onClick={() => handleRowClicked(`${tableIndex}_${rowIndex}`)}
+            className={
+              `${tableIndex}_${rowIndex}` === selectedRow
+                ? `${tableIndex}_${rowIndex} active-row`
+                : `${tableIndex}_${rowIndex}`
+            }
           >
             {columns.map((col, colIndex) => (
-              <td key={colIndex}>{row[col]}</td>
+              <td key={colIndex}>
+                <RenderValue
+                  val={row[col]}
+                  tableClass={tableClass}
+                  tableIndex={tableIndex}
+                />
+              </td>
             ))}
           </tr>
         ))}
+      </>
+    );
+  };
+
+  const RenderAsPrimitive = () => {
+    return (
+      <>
+        {tableRows.map((row, rowIndex) => (
+          <tr key={`${tableIndex}_${rowIndex}`}>
+            <td>
+              <span>{row}</span>
+            </td>
+          </tr>
+        ))}
+      </>
+    );
+  };
+
+  return (
+    <table {...props} className={tableClass}>
+      {isPrimitiveArray ? null : (
+        <thead>
+          <tr>
+            {columns.map((col, colIndex) => (
+              <th key={colIndex}>{col}</th>
+            ))}
+          </tr>
+        </thead>
+      )}
+      <tbody>
+        {isPrimitiveArray ? <RenderAsPrimitive /> : <RenderAsArray />}
       </tbody>
     </table>
   );
@@ -84,4 +148,5 @@ AutoTable.propTypes = {
 AutoTable.defaultProps = {
   data: null,
   tableClass: "styled-table",
+  tableIndex: 0,
 };

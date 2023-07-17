@@ -70,7 +70,6 @@
     "rollup-plugin-peer-deps-external": "^2.2.4"
   },
   "peerDependencies": {
-    "@babel/runtime": "^7.17.9",
     "prop-types": "^15.8.1",
     "react": "^16.14.0 || ^17.0.0 || ^18.2.0",
     "react-dom": "^16.14.0 || ^17.0.0 || ^18.2.0"

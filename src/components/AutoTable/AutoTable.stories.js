@@ -37,3 +37,9 @@ export const Empty = {
     data: null,
   },
 };
+
+export const Undefined = {
+  args: {
+    data: undefined,
+  },
+};
