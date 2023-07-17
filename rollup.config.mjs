@@ -21,7 +21,7 @@ const pkg = require("./package.json");
 
 const babelRuntimeVersion = pkg.dependencies["@babel/runtime"].replace(
   /^[^0-9]*/,
-  "",
+  ""
 );
 
 const outputOptions = {
@@ -31,6 +31,7 @@ const outputOptions = {
   // If needed, can switch to 'compat' which checks for .default prop on the default export instead
   // see https://rollupjs.org/configuration-options/#output-interop
   interop: "auto",
+  sourcemap: true,
   banner: `/*
  * Auto Table
  * @copyright Lee Winter
@@ -54,13 +55,13 @@ const config = {
   ],
   plugins: [
     external(),
-    css({ output: "assets/bundle-styles.css" }),
     alias({
       entries: {
         src: fileURLToPath(new URL("src", import.meta.url)),
       },
     }),
-    nodeResolve(),
+    css({ output: "assets/bundle-styles.css" }),
+    nodeResolve({ preferBuiltins: true, mainFields: ["browser"] }),
     commonjs({ include: ["node_modules/**"] }),
     babel({
       babelHelpers: "runtime",
