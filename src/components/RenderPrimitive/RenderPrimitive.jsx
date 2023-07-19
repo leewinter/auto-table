@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { getDataType } from "../../utils";
-import RenderBoolValue from "./RenderBoolValue";
+import RenderBoolValue from "./RenderBoolValue.jsx";
 
 function RenderPrimitive({ value }) {
   const type = useMemo(() => {
