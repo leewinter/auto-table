@@ -12,9 +12,9 @@ export default {
 export const Array = {
   args: {
     data: [
-      { id: 1, name: "Lee", mobile: "na" },
-      { id: 2, name: "Danny", mobile: "123456789" },
-      { id: 2, name: "Tom", mobile: "987654321" },
+      { id: 1, name: "Lee", mobile: "na", isAwesome: true },
+      { id: 2, name: "Danny", mobile: "123456789", isAwesome: false },
+      { id: 2, name: "Tom", mobile: "987654321", isAwesome: true },
     ],
   },
 };
