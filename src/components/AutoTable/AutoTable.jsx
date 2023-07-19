@@ -1,14 +1,8 @@
 import PropTypes from "prop-types";
 import { useMemo, useState, useEffect } from "react";
+import { getDataType } from "../../utils";
+import RenderPrimitive from "../RenderPrimitive";
 import "./index.css";
-
-const getDataType = (val) => {
-  if (val) {
-    if (Array.isArray(val)) return "array";
-    return typeof val;
-  }
-  return null;
-};
 
 const nonRenderTypes = ["functions", "object", "array"];
 
@@ -21,7 +15,7 @@ const RenderValue = ({ val, tableClass, tableIndex }) => {
         tableIndex={tableIndex + 1}
       />
     );
-  return <span>{val}</span>;
+  return <RenderPrimitive value={val} />;
 };
 
 export default function AutoTable({ data, tableClass, tableIndex, ...props }) {
