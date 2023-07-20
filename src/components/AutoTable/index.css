@@ -1,10 +1,10 @@
 :root {
-    --bg-color-head: #009879;
+    --bg-color-head: #376687;
     --txt-color-hd: #ffffff;
     --border-color-tr: #dddddd;
     --bg-color-even-row: #f3f3f3;
-    --border-color-bot-tr: #009879;
-    --txt-color-active: #009879;
+    --border-color-bot-tr: #376687;
+    --txt-color-active: #376687;
 }
 
 .styled-table {
