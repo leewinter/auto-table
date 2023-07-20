@@ -19,6 +19,13 @@ export const Array = {
   },
 };
 
+export const HumanReadableHeadersOff = {
+  args: {
+    data: [{ id: 1, name: "Lee", mobile: "na", isAwesome: true }],
+    options: { HumanReadableOff: false },
+  },
+};
+
 export const Object = {
   args: {
     data: { id: 1, name: "Steve" },
