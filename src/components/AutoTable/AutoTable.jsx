@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import { useMemo, useState, useEffect } from "react";
-import { getDataType } from "../../utils";
+import { getDataType, getHumanReadable } from "../../utils";
 import RenderPrimitive from "../RenderPrimitive";
 import "./index.css";
 
-const nonRenderTypes = ["functions", "object", "array"];
+const nonePrimitiveTypes = ["functions", "object", "array"];
 
 const RenderValue = ({ val, tableClass, tableIndex }) => {
-  if (nonRenderTypes.some((n) => n === getDataType(val)))
+  if (nonePrimitiveTypes.some((n) => n === getDataType(val)))
     return (
       <AutoTable
         data={val}
@@ -18,7 +18,13 @@ const RenderValue = ({ val, tableClass, tableIndex }) => {
   return <RenderPrimitive value={val} />;
 };
 
-export default function AutoTable({ data, tableClass, tableIndex, ...props }) {
+export default function AutoTable({
+  data,
+  tableClass,
+  tableIndex,
+  options,
+  ...props
+}) {
   const [tableRows, setTableRows] = useState([]);
   const [selectedRow, setSelectedRow] = useState("");
   const [isPrimitiveArray, setIsPrimitiveArray] = useState(false);
@@ -116,7 +122,9 @@ export default function AutoTable({ data, tableClass, tableIndex, ...props }) {
         <thead>
           <tr>
             {columns.map((col, colIndex) => (
-              <th key={colIndex}>{col}</th>
+              <th key={colIndex} title={`${col}`}>
+                {options.humanReadableHeaders ? getHumanReadable(col) : col}
+              </th>
             ))}
           </tr>
         </thead>
@@ -137,10 +145,19 @@ AutoTable.propTypes = {
    * Class applied to the table
    */
   tableClass: PropTypes.string,
+  /**
+   * settings object to override default behaviour
+   */
+  options: {
+    humanReadableHeaders: PropTypes.bool,
+  },
 };
 
 AutoTable.defaultProps = {
   data: null,
   tableClass: "styled-table",
   tableIndex: 0,
+  options: {
+    humanReadableHeaders: true,
+  },
 };
