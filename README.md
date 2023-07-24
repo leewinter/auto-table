@@ -15,7 +15,13 @@ const testData = [
     ];
 
 // From array
-<AutoTable data={testData} />
+<AutoTable data={testData} options={{
+    humanReadableHeaders: true,
+    pagination: {
+      itemsPerPage: 10,
+      usePagination: false
+    }
+  }} />
 
 // From object
 <AutoTable data={testData[0]} tableClass="styled-table" />
@@ -80,5 +86,44 @@ Current built in styles as follows:-
 .styled-table tbody tr.active-row {
   font-weight: bold;
   color: var(--txt-color-active);
+}
+
+/* Pagination */
+.styled-table ul {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0 5rem;
+}
+
+.styled-table ul li a {
+  border-radius: 7px;
+  padding: 0.1rem 1rem;
+  border: gray 1px solid;
+  cursor: pointer;
+}
+
+.styled-table ul li.previous a,
+.styled-table ul li.next a,
+.styled-table ul li.break a {
+  border-color: transparent;
+}
+
+.styled-table ul li.selected a {
+  background-color: var(--bg-color-head);
+  border-color: transparent;
+  color: white;
+  min-width: 32px;
+}
+
+.styled-table ul li.disabled a {
+  color: grey;
+}
+
+.styled-table ul li.disable,
+.styled-table ul li.disabled a {
+  cursor: default;
 }
 ```
