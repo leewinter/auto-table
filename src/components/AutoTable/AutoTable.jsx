@@ -1,23 +1,11 @@
 import PropTypes from "prop-types";
 import { useMemo, useState, useEffect } from "react";
-import { getDataType, getHumanReadable } from "../../utils";
-import RenderPrimitive from "../RenderPrimitive";
-import ReactPaginate from "react-paginate";
+import { getDataType } from "../../utils";
+import { getPageCount, getCurrentPageItems, getPageOffset } from "./Pagination";
+import TableHead from "./TableHead";
+import TableFoot from "./TableFoot";
+import TableBody from "./TableBody";
 import "./index.css";
-
-const nonePrimitiveTypes = ["functions", "object", "array"];
-
-const RenderValue = ({ val, tableClass, tableIndex }) => {
-  if (nonePrimitiveTypes.some((n) => n === getDataType(val)))
-    return (
-      <AutoTable
-        data={val}
-        tableClass={tableClass}
-        tableIndex={tableIndex + 1}
-      />
-    );
-  return <RenderPrimitive value={val} />;
-};
 
 export default function AutoTable({
   data,
@@ -32,14 +20,16 @@ export default function AutoTable({
   const [isObjectTable, setIsObjectTable] = useState(false);
   const [itemOffset, setItemOffset] = useState(0);
 
-  const { usePagination, itemsPerPage } = {
-    usePagination: options?.pagination?.usePagination,
-    itemsPerPage: options?.pagination?.itemsPerPage,
-  };
-
   const dataType = useMemo(() => {
     return getDataType(data);
   }, [data]);
+
+  const { usePagination = false, itemsPerPage = 10 } = useMemo(() => {
+    return {
+      usePagination: options?.pagination?.usePagination && dataType === "array", // only allow pagination for arrays
+      itemsPerPage: options?.pagination?.itemsPerPage,
+    };
+  }, [options]);
 
   const columns = useMemo(() => {
     if (dataType) {
@@ -64,13 +54,12 @@ export default function AutoTable({
   }, [data, dataType]);
 
   const pageCount = useMemo(() => {
-    return Math.ceil(tableRows.length / itemsPerPage);
+    return getPageCount(tableRows.length, itemsPerPage);
   }, [tableRows]);
 
   const currentItems = useMemo(() => {
     if (usePagination) {
-      const endOffset = itemOffset + itemsPerPage;
-      return tableRows.slice(itemOffset, endOffset);
+      return getCurrentPageItems(tableRows, itemOffset, itemsPerPage);
     }
     return tableRows;
   }, [tableRows, itemOffset]);
@@ -93,87 +82,37 @@ export default function AutoTable({
       </div>
     );
 
-  const RenderAsArray = () => {
-    return (
-      <>
-        {currentItems.map((row, rowIndex) => (
-          <tr
-            key={`${tableIndex}_${rowIndex}`}
-            onClick={() => handleRowClicked(`${tableIndex}_${rowIndex}`)}
-            className={
-              `${tableIndex}_${rowIndex}` === selectedRow
-                ? `${tableIndex}_${rowIndex} active-row`
-                : `${tableIndex}_${rowIndex}`
-            }
-          >
-            {columns.map((col, colIndex) => (
-              <td key={colIndex}>
-                <RenderValue
-                  val={row[col]}
-                  tableClass={tableClass}
-                  tableIndex={tableIndex}
-                />
-              </td>
-            ))}
-          </tr>
-        ))}
-      </>
+  const handlePageClick = ({ selected: selectedPage }) => {
+    const newOffset = getPageOffset(
+      selectedPage,
+      itemsPerPage,
+      tableRows.length
     );
-  };
-
-  const RenderAsPrimitive = () => {
-    return (
-      <>
-        {currentItems.map((row, rowIndex) => (
-          <tr key={`${tableIndex}_${rowIndex}`}>
-            <td>
-              <span>{row}</span>
-            </td>
-          </tr>
-        ))}
-      </>
-    );
-  };
-
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % tableRows.length;
     setItemOffset(newOffset);
   };
 
   return (
     <table {...props} className={tableClass}>
-      {isPrimitiveArray ? null : (
-        <thead>
-          <tr>
-            {columns.map((col, colIndex) => (
-              <th key={colIndex} title={`${col}`}>
-                {options.humanReadableHeaders ? getHumanReadable(col) : col}
-              </th>
-            ))}
-          </tr>
-        </thead>
-      )}
-      <tbody>
-        {isPrimitiveArray ? <RenderAsPrimitive /> : <RenderAsArray />}
-      </tbody>
-      {/* Disable pagination for objects for now */}
-      {usePagination && dataType === "array" ? (
-        <tfoot>
-          <tr>
-            <td colSpan={columns.length}>
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel="next >"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={5}
-                pageCount={pageCount}
-                previousLabel="< previous"
-                renderOnZeroPageCount={null}
-              />
-            </td>
-          </tr>
-        </tfoot>
-      ) : null}
+      <TableHead
+        isNonKeyValueArray={isPrimitiveArray}
+        humanReadableHeaders={options.humanReadableHeaders}
+        columns={columns}
+      />
+      <TableBody
+        isNonKeyValueArray={isPrimitiveArray}
+        visibleRows={currentItems}
+        tableIndex={tableIndex}
+        onRowClicked={handleRowClicked}
+        selectedRow={selectedRow}
+        columns={columns}
+        tableClass={tableClass}
+      />
+      <TableFoot
+        usePagination={usePagination}
+        columns={columns}
+        onPageChange={handlePageClick}
+        pageCount={pageCount}
+      />
     </table>
   );
 }
@@ -190,13 +129,13 @@ AutoTable.propTypes = {
   /**
    * settings object to override default behaviour
    */
-  options: {
+  options: PropTypes.shape({
     humanReadableHeaders: PropTypes.bool,
-    pagination: {
+    pagination: PropTypes.shape({
       usePagination: PropTypes.bool,
       itemsPerPage: PropTypes.number,
-    },
-  },
+    }),
+  }),
 };
 
 AutoTable.defaultProps = {

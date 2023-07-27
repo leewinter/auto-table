@@ -16,3 +16,5 @@ export const getHumanReadable = (val) => {
   }
   return label;
 };
+
+export const nonePrimitiveTypes = ["functions", "object", "array"];

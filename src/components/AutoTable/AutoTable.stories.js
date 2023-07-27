@@ -12,9 +12,27 @@ export default {
 export const DataArray = {
   args: {
     data: [
-      { id: 1, name: "Lee", mobile: "na", isAwesome: true },
-      { id: 2, name: "Danny", mobile: "123456789", isAwesome: false },
-      { id: 2, name: "Tom", mobile: "987654321", isAwesome: true },
+      {
+        id: 1,
+        name: "Lee",
+        mobile: "na",
+        isAwesome: true,
+        primitiveArray: ["string 1", "string 2", "string 3"],
+      },
+      {
+        id: 2,
+        name: "Danny",
+        mobile: "123456789",
+        isAwesome: false,
+        primitiveArray: [],
+      },
+      {
+        id: 2,
+        name: "Tom",
+        mobile: "987654321",
+        isAwesome: true,
+        primitiveArray: [],
+      },
     ],
     tableClass: "styled-table",
     options: {
