@@ -1,4 +1,4 @@
-import Pagination from "./Pagination";
+import Pagination from "./Pagination.jsx";
 
 function TableFoot({ columns, onPageChange, pageCount, usePagination }) {
   if (pageCount <= 1) return null;
