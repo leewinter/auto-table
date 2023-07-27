@@ -1,7 +1,8 @@
 import Pagination from "./Pagination";
 
-function TableFoot({ columns, onPageChange, pageCount }) {
+function TableFoot({ columns, onPageChange, pageCount, usePagination }) {
   if (pageCount <= 1) return null;
+  if (!usePagination) return null;
 
   return (
     <tfoot>

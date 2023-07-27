@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useMemo, useState, useEffect } from "react";
 import { getDataType } from "../../utils";
-
+import { getPageCount, getCurrentPageItems, getPageOffset } from "./Pagination";
 import TableHead from "./TableHead";
 import TableFoot from "./TableFoot";
 import TableBody from "./TableBody";
@@ -20,14 +20,16 @@ export default function AutoTable({
   const [isObjectTable, setIsObjectTable] = useState(false);
   const [itemOffset, setItemOffset] = useState(0);
 
-  const { usePagination, itemsPerPage } = {
-    usePagination: options?.pagination?.usePagination,
-    itemsPerPage: options?.pagination?.itemsPerPage,
-  };
-
   const dataType = useMemo(() => {
     return getDataType(data);
   }, [data]);
+
+  const { usePagination = false, itemsPerPage = 10 } = useMemo(() => {
+    return {
+      usePagination: options?.pagination?.usePagination && dataType === "array", // only allow pagination for arrays
+      itemsPerPage: options?.pagination?.itemsPerPage,
+    };
+  }, [options]);
 
   const columns = useMemo(() => {
     if (dataType) {
@@ -52,13 +54,12 @@ export default function AutoTable({
   }, [data, dataType]);
 
   const pageCount = useMemo(() => {
-    return Math.ceil(tableRows.length / itemsPerPage);
+    return getPageCount(tableRows.length, itemsPerPage);
   }, [tableRows]);
 
   const currentItems = useMemo(() => {
     if (usePagination) {
-      const endOffset = itemOffset + itemsPerPage;
-      return tableRows.slice(itemOffset, endOffset);
+      return getCurrentPageItems(tableRows, itemOffset, itemsPerPage);
     }
     return tableRows;
   }, [tableRows, itemOffset]);
@@ -81,8 +82,12 @@ export default function AutoTable({
       </div>
     );
 
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % tableRows.length;
+  const handlePageClick = ({ selected: selectedPage }) => {
+    const newOffset = getPageOffset(
+      selectedPage,
+      itemsPerPage,
+      tableRows.length
+    );
     setItemOffset(newOffset);
   };
 
@@ -102,14 +107,12 @@ export default function AutoTable({
         columns={columns}
         tableClass={tableClass}
       />
-      {/* Disable pagination for objects for now */}
-      {usePagination && dataType === "array" ? (
-        <TableFoot
-          columns={columns}
-          onPageChange={handlePageClick}
-          pageCount={pageCount}
-        />
-      ) : null}
+      <TableFoot
+        usePagination={usePagination}
+        columns={columns}
+        onPageChange={handlePageClick}
+        pageCount={pageCount}
+      />
     </table>
   );
 }
