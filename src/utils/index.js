@@ -18,3 +18,21 @@ export const getHumanReadable = (val) => {
 };
 
 export const nonePrimitiveTypes = ["functions", "object", "array"];
+
+export const filterArray = (query, prop, array, caseInsensitive = true) => {
+  if (!query) return array;
+  let filteredArray = [];
+
+  for (let i = 0; i < array.length; i++) {
+    let propValueByRow = array[i][prop];
+    if (caseInsensitive) {
+      propValueByRow = propValueByRow.toLowerCase();
+      query = query.toLowerCase();
+    }
+    if (propValueByRow != null && propValueByRow.toString().includes(query)) {
+      filteredArray.push(array[i]);
+    }
+  }
+
+  return filteredArray;
+};

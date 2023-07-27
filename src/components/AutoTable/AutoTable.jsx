@@ -5,7 +5,22 @@ import { getPageCount, getCurrentPageItems, getPageOffset } from "./Pagination";
 import TableHead from "./TableHead";
 import TableFoot from "./TableFoot";
 import TableBody from "./TableBody";
+import TableSearch from "./TableSearch";
 import "./index.css";
+
+const defaultProps = {
+  data: null,
+  tableClass: "styled-table",
+  tableIndex: 0,
+  options: {
+    humanReadableHeaders: true,
+    pagination: {
+      usePagination: true,
+      itemsPerPage: 10,
+    },
+    showSearch: false,
+  },
+};
 
 export default function AutoTable({
   data,
@@ -14,6 +29,7 @@ export default function AutoTable({
   options,
   ...props
 }) {
+  const [dataArray, setDataArray] = useState([]);
   const [tableRows, setTableRows] = useState([]);
   const [selectedRow, setSelectedRow] = useState("");
   const [isPrimitiveArray, setIsPrimitiveArray] = useState(false);
@@ -24,12 +40,32 @@ export default function AutoTable({
     return getDataType(data);
   }, [data]);
 
-  const { usePagination = false, itemsPerPage = 10 } = useMemo(() => {
+  const {
+    usePagination,
+    itemsPerPage,
+    showSearch = false,
+    humanReadableHeaders,
+  } = useMemo(() => {
     return {
-      usePagination: options?.pagination?.usePagination && dataType === "array", // only allow pagination for arrays
-      itemsPerPage: options?.pagination?.itemsPerPage,
+      usePagination:
+        (options?.pagination?.usePagination != null
+          ? options?.pagination?.usePagination
+          : defaultProps.options.pagination.usePagination) &&
+        dataType === "array", // only allow pagination for arrays
+      itemsPerPage:
+        options?.pagination?.itemsPerPage != null
+          ? options?.pagination?.itemsPerPage
+          : defaultProps.options.pagination.itemsPerPage,
+      showSearch:
+        (options?.showSearch != null
+          ? options?.showSearch
+          : defaultProps.options.showSearch) && dataType === "array", // only allow search for arrays
+      humanReadableHeaders:
+        options?.humanReadableHeaders != null
+          ? options?.humanReadableHeaders
+          : defaultProps.options?.humanReadableHeaders,
     };
-  }, [options]);
+  }, [options, dataType, data]);
 
   const columns = useMemo(() => {
     if (dataType) {
@@ -66,16 +102,20 @@ export default function AutoTable({
 
   useEffect(() => {
     if (data) {
-      if (dataType === "array") setTableRows(data);
-      if (dataType === "object") setTableRows([data]);
+      if (dataType === "array") setDataArray(data);
+      if (dataType === "object") setDataArray([data]);
     }
   }, [data, dataType]);
+
+  useEffect(() => {
+    setTableRows(dataArray);
+  }, [dataArray]);
 
   const handleRowClicked = (rowIndex) => {
     if (!isPrimitiveArray && !isObjectTable) setSelectedRow(rowIndex);
   };
 
-  if (!tableRows.length)
+  if (!dataArray.length)
     return (
       <div>
         <p>No data found</p>
@@ -91,29 +131,54 @@ export default function AutoTable({
     setItemOffset(newOffset);
   };
 
+  const handleSearchChange = (query) => {
+    const results = dataArray.filter((row) => {
+      const matchedColumns = columns.filter((col) => {
+        const propertyValue = row[col];
+        if (!propertyValue) return false;
+        if (
+          propertyValue.toString().toLowerCase().includes(query.toLowerCase())
+        )
+          return true;
+        return false;
+      });
+      let match = matchedColumns.length;
+      if (!columns.length && !match)
+        match = row.toString().toLowerCase().includes(query.toLowerCase());
+      return match;
+    });
+
+    setItemOffset(0);
+    setTableRows(results);
+  };
+
   return (
-    <table {...props} className={tableClass}>
-      <TableHead
-        isNonKeyValueArray={isPrimitiveArray}
-        humanReadableHeaders={options.humanReadableHeaders}
-        columns={columns}
-      />
-      <TableBody
-        isNonKeyValueArray={isPrimitiveArray}
-        visibleRows={currentItems}
-        tableIndex={tableIndex}
-        onRowClicked={handleRowClicked}
-        selectedRow={selectedRow}
-        columns={columns}
-        tableClass={tableClass}
-      />
-      <TableFoot
-        usePagination={usePagination}
-        columns={columns}
-        onPageChange={handlePageClick}
-        pageCount={pageCount}
-      />
-    </table>
+    <>
+      {showSearch ? <TableSearch onSearchChange={handleSearchChange} /> : null}
+      <table {...props} className={tableClass}>
+        <TableHead
+          isNonKeyValueArray={isPrimitiveArray}
+          humanReadableHeaders={humanReadableHeaders}
+          columns={columns}
+        />
+        <TableBody
+          isNonKeyValueArray={isPrimitiveArray}
+          visibleRows={currentItems}
+          tableIndex={tableIndex}
+          onRowClicked={handleRowClicked}
+          selectedRow={selectedRow}
+          columns={columns}
+          tableClass={tableClass}
+          options={options}
+        />
+        <TableFoot
+          usePagination={usePagination}
+          columns={columns}
+          onPageChange={handlePageClick}
+          pageCount={pageCount}
+        />
+      </table>
+    </>
   );
 }
 
@@ -135,18 +200,8 @@ AutoTable.propTypes = {
       usePagination: PropTypes.bool,
       itemsPerPage: PropTypes.number,
     }),
+    showSearch: PropTypes.bool,
   }),
 };
 
-AutoTable.defaultProps = {
-  data: null,
-  tableClass: "styled-table",
-  tableIndex: 0,
-  options: {
-    humanReadableHeaders: true,
-    pagination: {
-      usePagination: true,
-      itemsPerPage: 10,
-    },
-  },
-};
+AutoTable.defaultProps = defaultProps;
