@@ -1,4 +1,4 @@
-import RenderDataValue from "./RenderDataValue";
+import RenderDataValue from "./RenderDataValue.jsx";
 
 function TableBody({
   isNonKeyValueArray,

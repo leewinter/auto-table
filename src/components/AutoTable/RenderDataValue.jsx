@@ -1,4 +1,4 @@
-import AutoTable from "./AutoTable";
+import AutoTable from "./AutoTable.jsx";
 import RenderPrimitive from "../RenderPrimitive";
 import { getDataType, nonePrimitiveTypes } from "../../utils";
 

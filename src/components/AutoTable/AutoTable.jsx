@@ -1,11 +1,15 @@
 import PropTypes from "prop-types";
 import { useMemo, useState, useEffect } from "react";
 import { getDataType } from "../../utils";
-import { getPageCount, getCurrentPageItems, getPageOffset } from "./Pagination";
-import TableHead from "./TableHead";
-import TableFoot from "./TableFoot";
-import TableBody from "./TableBody";
-import TableSearch from "./TableSearch";
+import {
+  getPageCount,
+  getCurrentPageItems,
+  getPageOffset,
+} from "./Pagination.jsx";
+import TableHead from "./TableHead.jsx";
+import TableFoot from "./TableFoot.jsx";
+import TableBody from "./TableBody.jsx";
+import TableSearch from "./TableSearch.jsx";
 import "./index.css";
 
 const defaultProps = {
