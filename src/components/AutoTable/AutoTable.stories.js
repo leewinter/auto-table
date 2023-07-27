@@ -37,7 +37,7 @@ export const DataArray = {
     tableClass: "styled-table",
     options: {
       pagination: { usePagination: false, itemsPerPage: 10 },
-      humanReadableHeaders: true,
+      showSearch: true,
     },
   },
 };
@@ -64,7 +64,7 @@ export const Pagination = {
     ),
     options: {
       pagination: { usePagination: true, itemsPerPage: 5 },
-      humanReadableHeaders: true,
+      showSearch: true,
     },
   },
 };

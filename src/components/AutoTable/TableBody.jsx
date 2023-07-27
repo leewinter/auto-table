@@ -8,6 +8,7 @@ function TableBody({
   selectedRow,
   columns,
   tableClass,
+  options,
 }) {
   const RenderAsArray = () => {
     return (
@@ -28,6 +29,7 @@ function TableBody({
                   val={row[col]}
                   tableClass={tableClass}
                   tableIndex={tableIndex}
+                  options={options}
                 />
               </td>
             ))}
