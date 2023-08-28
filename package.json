@@ -63,6 +63,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-storybook": "^0.6.12",
     "lint-staged": "^13.2.2",
+    "postcss": "^8.4.28",
     "prettier": "^2.8.8",
     "rollup": "^3.23.0",
     "rollup-plugin-analyzer": "^4.0.0",
