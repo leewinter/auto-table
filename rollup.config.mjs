@@ -13,8 +13,9 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 import analyze from "rollup-plugin-analyzer";
 import preserveDirectives from "rollup-plugin-preserve-directives";
-import css from "rollup-plugin-import-css";
 import external from "rollup-plugin-peer-deps-external";
+import postcss from "rollup-plugin-postcss";
+import autoprefixer from "autoprefixer";
 
 const require = createRequire(import.meta.url);
 const pkg = require("./package.json");
@@ -26,7 +27,7 @@ const babelRuntimeVersion = pkg.dependencies["@babel/runtime"].replace(
 
 const outputOptions = {
   exports: "named",
-  preserveModules: true,
+  preserveModules: false,
   // Ensures that CJS default exports are imported properly (based on __esModule)
   // If needed, can switch to 'compat' which checks for .default prop on the default export instead
   // see https://rollupjs.org/configuration-options/#output-interop
@@ -60,9 +61,14 @@ const config = {
         src: fileURLToPath(new URL("src", import.meta.url)),
       },
     }),
-    css({ output: "assets/bundle-styles.css" }),
+    postcss({
+      plugins: [autoprefixer()],
+      sourceMap: true,
+      extract: true,
+      minimize: true,
+    }),
     nodeResolve({ preferBuiltins: true, mainFields: ["browser"] }),
-    commonjs({ include: ["node_modules/**"] }),
+    commonjs(),
     babel({
       babelHelpers: "runtime",
       exclude: /node_modules/,
