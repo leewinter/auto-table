@@ -18,7 +18,7 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./dist/style.css": "./dist/esm/assets/bundle-styles.css"
+    "./dist/styles.css": "./dist/esm/assets/bundle-styles.css"
   },
   "files": [
     "dist"
