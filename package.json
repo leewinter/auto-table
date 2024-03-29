@@ -7,7 +7,7 @@
   "homepage": "https://github.com/leewinter/auto-table#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/leewinter/auto-table"
+    "url": "git+https://github.com/leewinter/auto-table"
   },
   "license": "MIT",
   "description": "Basic dynamic table",
