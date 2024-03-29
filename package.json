@@ -5,6 +5,15 @@
     "email": "lee.winter@boxspark.co.uk"
   },
   "homepage": "https://github.com/leewinter/auto-table#readme",
+  "keywords": [
+    "react",
+    "reactjs",
+    "typescript",
+    "dynamic",
+    "auto",
+    "table",
+    "component"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leewinter/auto-table"
