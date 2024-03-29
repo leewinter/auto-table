@@ -1,11 +1,9 @@
 # @leewinter/auto-table
 
-Simple react component to auto generate tables from arrays or objects
+Simple react component to auto generate tables from arrays or objects.
 
 ```javascript
 import { AutoTable } from "@leewinter/auto-table";
-// Not required if built in styles aren't used
-import "@leewinter/auto-table/dist/styles.css";
 
 const testData = [
       { id: 1, name: "Lee", mobile: "na" },
@@ -24,106 +22,78 @@ const testData = [
   }} />
 
 // From object
-<AutoTable data={testData[0]} tableClass="styled-table" />
+<AutoTable data={testData[0]} />
+```
+
+### Options
+
+```javascript
+{
+  // Any object or array
+  data: [{col1: "1", col2: "test", embedded: ["test1", "test2"]}]
+        || {col1: "1", col2: "test"}
+        || ["test1", "test2"],
+  options: {
+    pagination: {
+      usePagination: true,
+      itemsPerPage: 10,
+    },
+    showSearch: false,
+    humanReadableHeaders: true,
+  }
+}
 ```
 
 ### Styling
 
-Table class can be set via tableClass param. Default is `tableClass="styled-table"`
+[@emotion/react](https://www.npmjs.com/package/@emotion/react) is used for styling.
 
 ![example](./docs/images/basic-example.png)
 
-Selected row will be given `active-row` class
+The table will default to the dark theme. This behaviour can be overriden using the ThemeProvider component.
 
-The following is only required if the built in styles are needed
+```javascript
+import { AutoTableThemeProvider, lightTheme } from "auto-table";
 
-`import "@leewinter/auto-table/dist/style.css";`
+...
 
-Current built in styles as follows:-
+const myTheme = {...lightTheme, bgColorHead: "purple" }
 
-```css
-:root {
-  --bg-color-head: #376687;
-  --txt-color-hd: #ffffff;
-  --border-color-tr: #dddddd;
-  --bg-color-even-row: #f3f3f3;
-  --border-color-bot-tr: #376687;
-  --txt-color-active: #376687;
+<AutoTableThemeProvider theme={myTheme}>
+  <AutoTable data={[{col1: "1", col2: "test"}]} />
+</AutoTableThemeProvider>
+```
+
+AutoTableThemeProvider accepts the following type.
+
+```javascript
+export interface AutoTableTheme extends Theme {
+  colors: {
+    txtColorActive: string;
+    bgColorActive: string;
+    borderColorStandard: string;
+    borderColorTr: string;
+    txtColorDisabled: string;
+    bgColorHead: string;
+    bgColorEvenRow: string;
+    txtColorEvenRow: string;
+    txtColorHead: string;
+    borderColorBotTr: string;
+  };
+  font: {
+    fontFamily: string;
+  };
 }
+```
 
-.styled-table {
-  border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 0.9em;
-  font-family: sans-serif;
-  min-width: 400px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
+If you want to use the current theme in your code.
 
-.styled-table thead tr {
-  background-color: var(--bg-color-head);
-  color: var(--txt-color-hd);
-  text-align: left;
-}
+```javascript
+import { useAutoTableTheme } from "auto-table";
 
-.styled-table th,
-.styled-table td {
-  padding: 12px 15px;
-}
+...
 
-.styled-table tbody tr {
-  border-bottom: 1px solid var(--border-color-tr);
-}
+const { theme } = useAutoTableTheme();
 
-.styled-table tbody tr:nth-of-type(even) {
-  background-color: var(--bg-color-even-row);
-}
-
-.styled-table tbody tr:last-of-type {
-  border-bottom: 2px solid var(--border-color-bot-tr);
-}
-
-.styled-table tbody tr.active-row {
-  font-weight: bold;
-  color: var(--txt-color-active);
-}
-
-/* Pagination */
-.styled-table ul {
-  margin: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  list-style-type: none;
-  padding: 0 5rem;
-}
-
-.styled-table ul li a {
-  border-radius: 7px;
-  padding: 0.1rem 1rem;
-  border: gray 1px solid;
-  cursor: pointer;
-}
-
-.styled-table ul li.previous a,
-.styled-table ul li.next a,
-.styled-table ul li.break a {
-  border-color: transparent;
-}
-
-.styled-table ul li.selected a {
-  background-color: var(--bg-color-head);
-  border-color: transparent;
-  color: white;
-  min-width: 32px;
-}
-
-.styled-table ul li.disabled a {
-  color: grey;
-}
-
-.styled-table ul li.disable,
-.styled-table ul li.disabled a {
-  cursor: default;
-}
+const headerTextColor = theme.txtColorHead;
 ```
