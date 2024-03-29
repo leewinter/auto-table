@@ -2,6 +2,16 @@
 
 Simple react component to auto generate tables from arrays or objects.
 
+### Getting Started
+
+Install using npm
+
+```shell
+npm install @leewinter/auto-table
+```
+
+### Usage
+
 ```javascript
 import { AutoTable } from "@leewinter/auto-table";
 
@@ -53,7 +63,7 @@ const testData = [
 The table will default to the dark theme. This behaviour can be overriden using the ThemeProvider component.
 
 ```javascript
-import { AutoTableThemeProvider, lightTheme } from "auto-table";
+import { AutoTableThemeProvider, lightTheme } from "@leewinter/auto-table";
 
 ...
 
@@ -89,7 +99,7 @@ export interface AutoTableTheme extends Theme {
 If you want to use the current theme in your code.
 
 ```javascript
-import { useAutoTableTheme } from "auto-table";
+import { useAutoTableTheme } from "@leewinter/auto-table";
 
 ...
 
