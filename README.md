@@ -2,6 +2,8 @@
 
 Simple react component to auto generate tables from arrays or objects.
 
+Demo of the latest Storybook build can be found on github pages [https://leewinter.github.io/auto-table](https://leewinter.github.io/auto-table).
+
 ### Getting Started
 
 Install using npm
