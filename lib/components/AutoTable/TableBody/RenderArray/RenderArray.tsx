@@ -1,15 +1,15 @@
 import RenderDataValue from "@lib/components/AutoTable/TableBody/RenderDataValue";
-import { AutoTableOptions } from "@lib/components/AutoTable/AutoTable";
+import { TableContainerOptions } from "@lib/components/AutoTable/TableContainer/TableContainer";
 import { DynamicKeyValue } from "@lib/types";
 
-interface RenderArrayParams {
+type RenderArrayParams = {
   visibleRows: Array<unknown>;
   tableIndex: number;
   onRowClicked: (rowIdentifier: string) => void;
   selectedRow: string;
   columns: Array<string>;
-  options: AutoTableOptions;
-}
+  options: TableContainerOptions;
+};
 
 export const RenderArray: React.FC<RenderArrayParams> = (props) => {
   const {

@@ -1,12 +1,12 @@
 import { AutoTable } from "@lib/components/AutoTable";
 import RenderPrimitive from "@lib/components/AutoTable/TableBody/RenderDataValue/RenderPrimitive";
 import { nonePrimitiveTypes, getDataType } from "@lib/utils";
-import { AutoTableOptions } from "@lib/components/AutoTable/AutoTable";
+import { TableContainerOptions } from "@lib/components/AutoTable/TableContainer/TableContainer";
 
 interface RenderDataValueParams {
   value: unknown;
   tableIndex: number;
-  options: AutoTableOptions;
+  options: TableContainerOptions;
 }
 
 export const RenderDataValue: React.FC<RenderDataValueParams> = (props) => {

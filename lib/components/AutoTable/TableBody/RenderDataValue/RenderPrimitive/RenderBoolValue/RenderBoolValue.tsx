@@ -1,6 +1,6 @@
-interface RenderBoolValueParams {
+type RenderBoolValueParams = {
   value: boolean;
-}
+};
 
 export const RenderBoolValue: React.FC<RenderBoolValueParams> = (props) => {
   const { value } = props;

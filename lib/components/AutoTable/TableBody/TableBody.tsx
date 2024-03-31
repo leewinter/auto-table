@@ -1,17 +1,17 @@
 import { useTableBodyStyles } from "@lib/components/AutoTable/TableBody/useTableBodyStyles";
-import { AutoTableOptions } from "@lib/components/AutoTable/AutoTable";
+import { TableContainerOptions } from "@lib/components/AutoTable/TableContainer/TableContainer";
 import RenderNonKeyValue from "@lib/components/AutoTable/TableBody/RenderNonKeyValue";
 import RenderArray from "@lib/components/AutoTable/TableBody/RenderArray";
 
-interface TableBodyParams {
+type TableBodyParams = {
   isNonKeyValueArray: boolean;
   visibleRows: Array<unknown>;
   tableIndex: number;
   onRowClicked: (rowIdentifier: string) => void;
   selectedRow: string;
   columns: Array<string>;
-  options: AutoTableOptions;
-}
+  options: TableContainerOptions;
+};
 
 export const TableBody: React.FC<TableBodyParams> = (props) => {
   const {

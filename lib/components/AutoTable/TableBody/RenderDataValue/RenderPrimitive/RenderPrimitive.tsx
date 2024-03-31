@@ -2,9 +2,9 @@ import { useMemo } from "react";
 import { getDataType } from "@lib/utils";
 import RenderBoolValue from "@lib/components/AutoTable/TableBody/RenderDataValue/RenderPrimitive/RenderBoolValue";
 
-interface RenderPrimitiveParams {
+type RenderPrimitiveParams = {
   value: object;
-}
+};
 
 export const RenderPrimitive: React.FC<RenderPrimitiveParams> = ({ value }) => {
   const type = useMemo(() => {
