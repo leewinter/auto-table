@@ -131,6 +131,104 @@ export const Pagination = {
   },
 };
 
+export const SortableEmbeddedArray: Story = {
+  args: {
+    data: [
+      {
+        id: 1,
+        name: "Lee",
+        mobile: "na",
+        isAwesome: true,
+        embeddedArray: [
+          { col1: 1, col2: "a", col3: true, col4: 123 },
+          { col1: 2, col2: "b", col3: false, col4: 234 },
+          { col1: 3, col2: "c", col3: true, col4: 345 },
+          { col1: 4, col2: "d", col3: true, col4: 456 },
+        ],
+      },
+      {
+        id: 2,
+        name: "Danny",
+        mobile: "123456789",
+        isAwesome: false,
+        embeddedArray: [
+          { col1: 1, col2: "a", col3: true, col4: 123 },
+          { col1: 2, col2: "b", col3: false, col4: 234 },
+          { col1: 3, col2: "c", col3: true, col4: 345 },
+          { col1: 4, col2: "d", col3: true, col4: 456 },
+        ],
+      },
+      {
+        id: 3,
+        name: "Tom",
+        mobile: "987654321",
+        isAwesome: true,
+        embeddedArray: [],
+      },
+      {
+        id: 4,
+        name: "Jerry",
+        mobile: "987654321",
+        isAwesome: true,
+        embeddedArray: [],
+      },
+      {
+        id: 5,
+        name: "Terry",
+        mobile: "987654321",
+        isAwesome: true,
+        embeddedArray: [],
+      },
+      {
+        id: 6,
+        name: "Jeff",
+        mobile: "987654321",
+        isAwesome: true,
+        embeddedArray: [],
+      },
+      {
+        id: 7,
+        name: "Tony",
+        mobile: "987654321",
+        isAwesome: true,
+        embeddedArray: [],
+      },
+      {
+        id: 8,
+        name: "Paul",
+        mobile: "987654321",
+        isAwesome: true,
+        embeddedArray: [],
+      },
+      {
+        id: 9,
+        name: "Becky",
+        mobile: "987654321",
+        isAwesome: true,
+        embeddedArray: [],
+      },
+      {
+        id: 10,
+        name: "Sarah",
+        mobile: "987654321",
+        isAwesome: true,
+        embeddedArray: [],
+      },
+      {
+        id: 11,
+        name: "Katy",
+        mobile: "987654321",
+        isAwesome: true,
+        embeddedArray: [],
+      },
+    ],
+    options: {
+      pagination: { usePagination: true, itemsPerPage: 5 },
+      showSearch: true,
+    },
+  },
+};
+
 export const Empty = {
   args: {
     data: null,
