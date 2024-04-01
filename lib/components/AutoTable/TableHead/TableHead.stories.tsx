@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { TableHead } from "@lib/components/AutoTable/TableHead/TableHead";
 
 const meta = {
@@ -28,5 +29,7 @@ export const Primary: Story = {
     isNonKeyValueArray: false,
     columns: ["Col 1", "Col 2", "col 3"],
     humanReadableHeaders: true,
+    handleColumnSort: fn(),
+    currentSortColumn: "",
   },
 };
