@@ -10,6 +10,7 @@ import TableBody from "@lib/components/AutoTable/TableBody";
 import TableFoot from "@lib/components/AutoTable/TableFoot";
 import { useAutoTableStyles } from "@lib/components/AutoTable/useAutoTableStyles";
 import TableSearch from "@lib/components/AutoTable/TableSearch";
+import { DynamicKeyValue } from "@lib/types";
 
 export type TableContainerOptions = {
   pagination: {
@@ -48,8 +49,13 @@ export const TableContainer: React.FC<TableContainerParams> = (props) => {
   const [isPrimitiveArray, setIsPrimitiveArray] = useState<boolean>(false);
   const [isObjectTable, setIsObjectTable] = useState<boolean>(false);
   const [itemOffset, setItemOffset] = useState<number>(0);
+  const [sortColumn, setSortColumn] = useState<string>("");
 
   const { styles } = useAutoTableStyles();
+
+  const defaultTableIndex = useMemo(() => {
+    return tableIndex ?? defaultProps.tableIndex;
+  }, [tableIndex]);
 
   const dataType = useMemo(() => {
     return getDataType(data);
@@ -109,7 +115,7 @@ export const TableContainer: React.FC<TableContainerParams> = (props) => {
       return getCurrentPageItems(tableRows, itemOffset, itemsPerPage);
     }
     return tableRows;
-  }, [tableRows, itemOffset, itemsPerPage, usePagination]);
+  }, [tableRows, itemOffset, itemsPerPage, usePagination, sortColumn]);
 
   useEffect(() => {
     if (data) {
@@ -146,6 +152,36 @@ export const TableContainer: React.FC<TableContainerParams> = (props) => {
     setTableRows(results);
   };
 
+  const handleColumnSort = (col: string, asc: boolean = true) => {
+    if (col) {
+      const sortedColumn = tableRows.sort((a, b) => {
+        const dynamicColIndex: keyof DynamicKeyValue = col;
+
+        const aRowAsDynamicKeyValue = a as DynamicKeyValue;
+        const bRowAsDynamicKeyValue = b as DynamicKeyValue;
+
+        const aValue = aRowAsDynamicKeyValue[dynamicColIndex];
+        const bValue = bRowAsDynamicKeyValue[dynamicColIndex];
+        const dataType = getDataType(aValue);
+
+        if (dataType === "string")
+          return asc
+            ? ("" + aValue).localeCompare("" + bValue)
+            : ("" + bValue).localeCompare("" + aValue);
+
+        if (dataType === "number")
+          return asc ? aValue - bValue : bValue - aValue;
+
+        if (dataType === "boolean")
+          return asc ? bValue - aValue : aValue - bValue;
+
+        return 1;
+      });
+      setTableRows([...sortedColumn]);
+      setSortColumn(col);
+    }
+  };
+
   return (
     <>
       {showSearch ? <TableSearch onSearchChange={handleSearchChange} /> : null}
@@ -154,11 +190,13 @@ export const TableContainer: React.FC<TableContainerParams> = (props) => {
           isNonKeyValueArray={isPrimitiveArray}
           humanReadableHeaders={humanReadableHeaders}
           columns={columns}
+          handleColumnSort={handleColumnSort}
+          currentSortColumn={sortColumn}
         />
         <TableBody
           isNonKeyValueArray={isPrimitiveArray}
           visibleRows={currentItems}
-          tableIndex={tableIndex ?? defaultProps.tableIndex}
+          tableIndex={defaultTableIndex}
           onRowClicked={handleRowClicked}
           selectedRow={selectedRow}
           columns={columns}
