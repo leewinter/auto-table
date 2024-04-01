@@ -74,5 +74,11 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "react-paginate": "^8.2.0"
+  },
+  "resolutions": {
+    "@types/mime": "3.0.4"
+  },
+  "overrides": {
+    "@types/mime": "3.0.4"
   }
 }
