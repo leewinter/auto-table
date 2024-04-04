@@ -2,6 +2,10 @@
 
 [![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@leewinter/auto-table)
 
+![Latest Stable Release](https://img.shields.io/npm/v/@leewinter/auto-table)
+![Downloads](https://img.shields.io/npm/d18m/@leewinter/auto-table)
+![Build Status](https://github.com/leewinter/auto-table/workflows/Build%20and%20Publish%20storybook%20to%20GitHub%20Pages/badge.svg)
+
 Simple react component to auto generate tables from arrays or objects.
 
 Demo of the latest Storybook build can be found on github pages [https://leewinter.github.io/auto-table](https://leewinter.github.io/auto-table).
